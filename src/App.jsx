@@ -2,13 +2,29 @@ import Batsman from './Batsman'
 import Counter from './Counter'
 import Users from './Users'
 import './App.css'
+import Friends from './Friends'
+import Army from './Army'
 import { Suspense } from 'react'
 
 const fetchUsers = fetch('https://jsonplaceholder.typicode.com/users')
 .then(res=>res.json())
 
+const fetchUsers1=fetch('https://jsonplaceholder.typicode.com/posts')
+.then(res=>res.json())
+
+const fetchArmy =async()=>{
+   const res = await fetch('https://jsonplaceholder.typicode.com/comments')
+   return res.json();
+}
+
+
 
 function App() {
+
+  const ArmyPromise=fetchArmy();
+  
+  
+  
   function handleClick(){
     alert('I am Clicked.')
   }
@@ -25,8 +41,17 @@ function App() {
         <Suspense fallback={<h3>Loading...</h3>}>
             <Users fetchUsers={fetchUsers}></Users>
         </Suspense>
+
+
+        <Suspense fallback={<h3>Friends.......</h3>}>
+            <Friends fetchUsers1={fetchUsers1}></Friends>
+        </Suspense>
+
+        <Suspense fallback={<h2>Army.......</h2>}>
+              <Army ArmyPromise={ArmyPromise}></Army>
+        </Suspense>
         
-        
+       
         <Batsman></Batsman>
           <Counter></Counter>
       <button onClick={handleClick}>Click Me</button>
